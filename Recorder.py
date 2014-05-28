@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-__author__ = 'pig'
+__author__ = 'Ricky Chen'
 
 import ConfigParser
 
-_file_name = 'data'
+_file_name = 'data.txt'
 _data_name_total = 'total'
 _data_name_happened = 'happened'
 
@@ -15,13 +15,13 @@ class Recorder():
         self.parser.read(_file_name)
 
         # Set first section as default
-        section = self.parser.sections()[0]
-        self.current_section = section
-        self.current_total = self.parser.getint(section, _data_name_total)
-        self.current_happened = self.parser.getint(section, _data_name_happened)
+        self.load_first_section_without_saving()
 
     def __del__(self):
         self.__save_current_section_to_file()
+
+    def get_sections(self):
+        return self.parser.sections()
 
     def record_happened(self):
         self.current_total += 1
@@ -44,6 +44,13 @@ class Recorder():
             self.current_total = self.parser.getint(next_section, _data_name_total)
             self.current_happened = self.parser.getint(next_section, _data_name_happened)
 
+    def load_first_section_without_saving(self):
+        section = self.parser.sections()[0]
+        self.current_section = section
+        self.current_total = self.parser.getint(section, _data_name_total)
+        self.current_happened = self.parser.getint(section, _data_name_happened)
+
+    # Can be remove when there are other sections
     def remove_section(self, section_name):
         is_removable = False
         if section_name == self.current_section:
@@ -54,6 +61,7 @@ class Recorder():
                     break
         if is_removable:
             self.parser.remove_section(section_name)
+            self.load_first_section_without_saving()
 
     def __save_current_section_to_file(self):
         self.__set_config_data()

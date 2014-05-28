@@ -1,0 +1,16 @@
+[好友的砂精]
+total = 185
+happened = 20
+
+[我的旅人]
+total = 40
+happened = 5
+
+[我的砂精]
+total = 34
+happened = 1
+
+[雙重砂精]
+total = 44
+happened = 4
+
